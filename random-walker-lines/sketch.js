@@ -1,8 +1,14 @@
 let x;
 let y;
+let nextX;
+let nextY;
+
 let r;
 let g;
 let b;
+
+let lineLength = 30;
+let lineWeight = 5;
 
 function setup() {
   createCanvas(900,500);
@@ -27,22 +33,26 @@ function setup() {
 }
 
 function draw() {
-  for (let i = 0; i < 1000; i++) {
-    x += random(-1,1);
-    y += random(-1,1);
+  for (let i = 0; i < 10; i++) {
+    nextX = x + random(-lineLength,lineLength);
+    nextY = y + random(-lineLength,lineLength);
 
-    x = constrain(x, 0, width);
-    y = constrain(y, 0, height)
+    nextX = constrain(nextX, 0, width);
+    nextY = constrain(nextY, 0, height)
     
-    r += random(-1,1);
-    g += random(-1,1);
-    b += random(-1,1);
+    r += random(-10,10);
+    g += random(-10,10);
+    b += random(-10,10);
 
     r = constrain(r, 0, 255);
     g = constrain(g, 0, 255);
     b = constrain(b, 0, 255);
 
-    stroke(0, g, 0);
-    point(x, y);
+    stroke(r, g, b);
+    strokeWeight(lineWeight);
+    line(x, y, nextX, nextY);
+
+    x = nextX;
+    y = nextY;
   }
 }
