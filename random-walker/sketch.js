@@ -27,7 +27,7 @@ function setup() {
 }
 
 function draw() {
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 500; i++) {
     x += random(-1,1);
     y += random(-1,1);
 

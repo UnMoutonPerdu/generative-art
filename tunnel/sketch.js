@@ -2,7 +2,7 @@ let s;
 let c = 0;
 let r = 0.6;
 let gc = 4;
-let scope = 1;
+let scope = 1.5;
 
 function setup() {
   createCanvas(500, 500);
@@ -17,7 +17,7 @@ function draw() {
   for (let px = 20; px < width/2-10; px+=3) {
     stroke(c);
     quasiSquareGrad(px, scope*px, width-2*px);
-    //diag(px, scope*px, width-2*px);
+    diag(px, scope*px, width-2*px);
     c += gc;
   }
   noLoop();

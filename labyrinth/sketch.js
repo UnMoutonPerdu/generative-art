@@ -1,5 +1,5 @@
-let shape = 1; // 0 for horizontal and vertical lines - 1 for diagonal lines
-let maxDepth = 6;
+let shape = 0; // 0 for horizontal and vertical lines - 1 for diagonal lines
+let maxDepth = 8;
 
 function setup() {
   createCanvas(600, 600);
