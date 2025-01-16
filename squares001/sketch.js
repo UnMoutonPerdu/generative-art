@@ -7,6 +7,8 @@ function setup() {
   background(220);
   //noFill();
   noStroke();
+  drawingContext.shadowBlur = 35;
+  drawingContext.shadowColor = color('gray');
 }
 
 function draw() {
@@ -16,12 +18,19 @@ function draw() {
       translate(i+25,j+25);
       rotate(random(-tilt,tilt));
       let r = random();
+      // if (r < 0.33) {
+      //   fill('red');
+      // } else if (r < 0.66) {
+      //   fill('white');
+      // } else {
+      //   fill('black');
+      // }
       if (r < 0.33) {
-        fill('red');
-      } else if (r < 0.66) {
-        fill('white');
-      } else {
         fill('black');
+        noStroke();
+      } else {
+        fill('white');
+        stroke('black')
       }
 
       quad(-25*random(1-noise,1+noise),-25*random(1-noise,1+noise),-25*random(1-noise,1+noise),25*random(1-noise,1+noise),25*random(1-noise,1+noise),25*random(1-noise,1+noise),25*random(1-noise,1+noise),-25*random(1-noise,1+noise));
