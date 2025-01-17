@@ -1,10 +1,11 @@
-let shape = 0; // 0 for horizontal and vertical lines - 1 for diagonal lines
-let maxDepth = 8;
+let shape = 1; // 0 for horizontal and vertical lines - 1 for diagonal lines
+let maxDepth = 5;
 
 function setup() {
   createCanvas(600, 600);
-  background(220);
+  background(0);
   strokeWeight(1.5);
+  stroke(227, 198, 118);
 }
 
 function draw() {

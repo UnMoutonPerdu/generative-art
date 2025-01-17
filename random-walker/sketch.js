@@ -1,5 +1,6 @@
 let numberWalkers = 200;
 let walkers = [];
+let countWalkers = 0;
 let drawingMode = 3;
 let speed = [300, 1, 1, 1];
 let period = 20;
@@ -27,15 +28,15 @@ function setup() {
   }
 
   // These buttons come from 'https://p5js.org/reference/p5/noLoop/'
-  startButton = createButton('▶');
-  startButton.position(sizeX, sizeY+height);
-  startButton.size(50, 20);
-  stopButton = createButton('◾');
-  stopButton.position(sizeX+50, sizeY+height);
-  stopButton.size(50, 20);
+  // startButton = createButton('▶');
+  // startButton.position(sizeX, sizeY+height);
+  // startButton.size(50, 20);
+  // stopButton = createButton('◾');
+  // stopButton.position(sizeX+50, sizeY+height);
+  // stopButton.size(50, 20);
 
-  startButton.mousePressed(loop);
-  stopButton.mousePressed(noLoop);
+  // startButton.mousePressed(loop);
+  // stopButton.mousePressed(noLoop);
 }
 
 function draw() {
@@ -65,6 +66,7 @@ function epitrochoidY(t, R, r, d, s) {
 
 class Walker {
   constructor() {
+    countWalkers += 1;
     if (drawingMode == 3) {
       let preferredColors = [color(232, 231, 227), color(117, 116, 111), color(33, 33, 31), color(181, 114, 172), color(127, 179, 201), color(123, 201, 154), color(230, 133, 194), color(230, 133, 164)];
 
