@@ -39,7 +39,7 @@ function setup() {
   for (let theta = -210; theta < 30; theta ++) {
     let radius = random(radiusInf, radiusSup);
     let dr = radius/(2*radiusSun);
-    let da = 2;
+    let da = 200/(2*radiusSun);
     if (theta <= -160 || theta >= -20) {
       dr = radius/(0.5*radiusSun);
       da = 3;
@@ -91,7 +91,7 @@ function draw() {
     if (x >= width && numberMountains != 1) {
       x = 0;
       oldInitY = initY;
-      initY = random(initY+20, oldInitY+50);
+      initY = random(initY+30, oldInitY+50);
       y = initY;
       numberMountains --;
     }
