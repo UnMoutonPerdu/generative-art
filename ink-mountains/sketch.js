@@ -6,7 +6,7 @@ let HEIGHT = 400;
 let drops = [];
 let dropsSun = [];
 let numberDrops = 1;
-let numberMountains = 4;
+let numberMountains;
 let loop = 0;
 
 // Position of drops
@@ -59,6 +59,7 @@ function setup() {
   noiseScale = random(0.01, 0.03);
 
   // First drop
+  numberMountains = random(3, 4);
   x = 0;
   totalX = 0;
   initY = random(HEIGHT/7, HEIGHT/5);
