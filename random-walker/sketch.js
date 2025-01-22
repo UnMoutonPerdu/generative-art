@@ -1,7 +1,7 @@
 let numberWalkers = 200;
 let walkers = [];
 let countWalkers = 0;
-let drawingMode = 3;
+let drawingMode = 0;
 let speed = [300, 1, 1, 1];
 let period = 20;
 let numberColorsMax = 15;

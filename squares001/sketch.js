@@ -23,13 +23,13 @@ function draw() {
       translate(i+25,j+25);
       rotate(random(-tilt,tilt));
       let r = random();
-      // if (r < 0.33) {
-      //   fill('red');
-      // } else if (r < 0.66) {
-      //   fill('white');
-      // } else {
-      //   fill('black');
-      // }
+      if (r < 0.33) {
+        fill('red');
+      } else if (r < 0.66) {
+        fill('white');
+      } else {
+        fill('black');
+      }
       // if (r < 0.33) {
       //   fill('black');
       //   noStroke();
@@ -38,7 +38,7 @@ function draw() {
       //   stroke('black')
       // }
       //fill(color(random(0,255), random(0,255), random(0,255)));
-      fill(color(random(0,255)));
+      // fill(color(random(0,255)));
 
       //drawingContext.shadowOffsetX = random(-10, 10);
       //drawingContext.shadowOffsetY = random(-10, 10);
