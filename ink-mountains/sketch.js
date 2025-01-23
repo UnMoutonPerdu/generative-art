@@ -28,20 +28,21 @@ let sunDrop = 0;
 let radiusInf = 4;
 let radiusSup = 6;
 
-// Background music
-let backgroundSound;
+// Better without it 
+// // Background music
+// let backgroundSound;
 
-function preload() {
-  soundFormats('mp3');
-  let r = random();
-  if (r < 0.33) {
-    backgroundSound = loadSound("music/music1.mp3");
-  } else if (r < 0.66) {
-    backgroundSound = loadSound("music/music2.mp3");
-  } else {
-    backgroundSound = loadSound("music/music3.mp3");
-  }
-}
+// function preload() {
+//   soundFormats('mp3');
+//   let r = random();
+//   if (r < 0.33) {
+//     backgroundSound = loadSound("music/music1.mp3");
+//   } else if (r < 0.66) {
+//     backgroundSound = loadSound("music/music2.mp3");
+//   } else {
+//     backgroundSound = loadSound("music/music3.mp3");
+//   }
+// }
 
 function setup() {
   // Create canvas
@@ -51,7 +52,7 @@ function setup() {
   cnv.position(sizeX, sizeY);
   // background(220);
   background(235, 224, 197);
-  backgroundMusic();
+  //backgroundMusic();
 
   // Seed used for Perlin noise
   seed = random(width*height);
@@ -59,7 +60,12 @@ function setup() {
   noiseScale = random(0.01, 0.03);
 
   // First drop
-  numberMountains = random(3, 4);
+  let r = random();
+  if (r < 0.5) {
+    numberMountains = 3;
+  } else {
+    numberMountains = 4;
+  }
   x = 0;
   totalX = 0;
   initY = random(HEIGHT/7, HEIGHT/5);
@@ -79,6 +85,7 @@ function setup() {
   // Sun drops
   for (let theta = -195; theta < 15; theta ++) {
     let radius = random(radiusInf, radiusSup);
+    // Different dr and da according of the angle theta = drops don't run the same way
     let dr = radius/(2*radiusSun);
     let da = 200/(2*radiusSun);
     if (theta <= -155 || theta >= -25) {
@@ -89,15 +96,15 @@ function setup() {
   }
 }
 
-function backgroundMusic() {
-  backgroundSound.play();
-  backgroundSound.loop();
-  backgroundSound.setVolume(0.05);
-  userStartAudio(true);
-}
+// function backgroundMusic() {
+//   backgroundSound.play();
+//   backgroundSound.loop();
+//   backgroundSound.setVolume(0.05);
+//   userStartAudio(true);
+// }
 
 function draw() {
-  // Draw sun
+  // Draw sun | loop allows to draw the sun only once and then draw the mountains
   if (loop == 0) {
     if (sunDrop < dropsSun.length-1) {
       sunDrop ++;
@@ -154,6 +161,7 @@ class Drop {
 
     this.initR = r;
     this.r = this.initR;
+    // The speed of reduction of the redius
     this.lifeReductionStep = 0;
     this.lifeReduction = this.lifeReductionStep*2/height;
     this.s = 1;
@@ -162,6 +170,7 @@ class Drop {
     this.green = 45;
     this.blue = 56;
 
+    // Specific value chosen to make the drop vanished not too fast
     this.lifeSpan = (this.y/(1.66*height));
     this.initA = random(200,255);
     this.a = this.initA*this.lifeSpan;
@@ -189,6 +198,7 @@ class Drop {
   }
 }
 
+// Kind of a copy of the previous class but with a simpler configuration
 class DropSun {
   constructor(x, y, r, dr, da) {
     this.x = x;
