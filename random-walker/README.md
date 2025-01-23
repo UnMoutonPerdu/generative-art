@@ -2,3 +2,4 @@
 
 ![random-walker](./random-walker-points.png)
 ![forest](./forest.png)
+![worms](./worms.png)
