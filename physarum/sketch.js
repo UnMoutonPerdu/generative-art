@@ -16,7 +16,11 @@ function setup() {
 
   angleMode(DEGREES);
   for (let i = 0; i < numberBlobs; i++) {
-    blobs[i] = new Blobs();
+    if (i % 2 == 0) {
+      blobs[i] = new Blobs(0, 0);
+    } else {
+      blobs[i] = new Blobs(width/2, height/2);
+    }
   }
   background(0);
 }
@@ -33,13 +37,11 @@ function draw() {
 
 
 class Blobs {
-  constructor() {
+  constructor(x, y) {
     // Position
-    // this.x = random(width);
-    // this.y = random(height);
-    this.x = WIDTH/2;
-    this.y = HEIGHT/2;
-    this.r = 0.5;
+    this.x = x;
+    this.y = y;
+    this.r = 1;
 
     // Orientation
     this.heading = random(360);
@@ -53,6 +55,11 @@ class Blobs {
     this.SO = 9;
     this.SA = 45;
     this.RA = 45;
+
+    // Blob color
+    this.red = random(255);
+    this.green = random(255);
+    this.blue = random(255);
   } 
 
   update() {
@@ -108,7 +115,7 @@ class Blobs {
   }
 
   display() {
-    fill(255);
+    fill(this.red, this.green, this.blue);
     noStroke();
     ellipse(this.x, this.y, 2*this.r, 2*this.r);
   }
