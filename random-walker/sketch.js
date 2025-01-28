@@ -1,7 +1,7 @@
 let numberWalkers = 200;
 let walkers = [];
 let countWalkers = 0;
-let drawingMode = 0;
+let drawingMode = 3;
 let speed = [300, 1, 1, 1];
 let period = 20;
 let numberColorsMax = 15;
@@ -28,15 +28,15 @@ function setup() {
   }
 
   // These buttons come from 'https://p5js.org/reference/p5/noLoop/'
-  // startButton = createButton('▶');
-  // startButton.position(sizeX, sizeY+height);
-  // startButton.size(50, 20);
-  // stopButton = createButton('◾');
-  // stopButton.position(sizeX+50, sizeY+height);
-  // stopButton.size(50, 20);
+  startButton = createButton('▶');
+  startButton.position(sizeX, sizeY+height);
+  startButton.size(50, 20);
+  stopButton = createButton('◾');
+  stopButton.position(sizeX+50, sizeY+height);
+  stopButton.size(50, 20);
 
-  // startButton.mousePressed(loop);
-  // stopButton.mousePressed(noLoop);
+  startButton.mousePressed(loop);
+  stopButton.mousePressed(noLoop);
 }
 
 function draw() {
