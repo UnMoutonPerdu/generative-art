@@ -1,18 +1,30 @@
 // Based on Jone's paper of 2010
 // Canvas configuration
-let WIDTH = 650;
-let HEIGHT = 650;
+let WIDTH = 600;
+let HEIGHT = 600;
 let pixelDens;
+let blurring = 10;
 
 // Blobs configuration
 let blobs = [];
-let numberBlobs = 25000;
+let numberBlobs; 
+let densityPopulation = 0.15;
 
-// Colors configuration
+// Drawing configuration
 // 0 -> White
 // 1 -> Random
 // 2 -> Yellow - Physarum like
-let colorMode = 2; 
+let colorMode = 0; 
+// 0 -> Border to border
+// 1 -> Bouncing against walls
+let continuousMode = 1; 
+// -1 -> Center
+// 0 -> Center + corners = fireworks
+// 1 -> Spawn in a circle
+let configuration = 1;
+// 0 -> All at the same time
+// 1 -> A certain  batch
+let spawnMode = 0;
 
 function setup() {
   // Create canvas
@@ -21,9 +33,12 @@ function setup() {
   let sizeY = (windowHeight-height)/2;
   cnv.position(sizeX, sizeY);
   pixelDens = pixelDensity();
-
   angleMode(DEGREES);
+
+  // Birth of blobs
+  numberBlobs = min(densityPopulation*width*height, 5000);
   createBasicBlob();
+
   background(0);
 }
 
@@ -35,8 +50,7 @@ function draw() {
 /////////// Basic Blob ///////////
 //////////////////////////////////
 
-function createBasicBlob() {
-  let configuration = 1;
+function createBasicBlob() {  
   if (configuration == 0) {
     // Center + corners = fireworks
     for (let i = 0; i < numberBlobs; i++) {
@@ -46,25 +60,39 @@ function createBasicBlob() {
         blobs[i] = new Blobs(width/2, height/2);
       }
     }
+  } else if (configuration == -1) {
+    for (let i = 0; i < numberBlobs; i++) {
+      blobs[i] = new Blobs(width/2, height/2);
+    }
   } else if (configuration == 1) {
     // Spawn in a circle
-    let radius = 300;
+    let radius = 200;
     for (let i = 0; i < numberBlobs; i++) {
       let r = random(radius);
       let theta = random(360);
       blobs[i] = new Blobs(width/2 + r*cos(theta), height/2 + r*sin(theta), 180+theta);
+    }
+  } else if (configuration == 2) {
+    for (let i = 0; i < numberBlobs; i++) {
+      blobs[i] = new Blobs(random(width), random(height), random(360));
     }
   }
 }
 
 // Basic blob -> Lot of particles that come together
 function basicBlob() {
-  background(0, 10);
+  background(0, blurring);
   loadPixels();
-
-  for (let i = 0; i < numberBlobs; i++) {
-    blobs[i].update();
-    blobs[i].display();
+  if (frameCount <= -1) {
+    for (let i = 0; i < numberBlobs/2; i++) {
+      blobs[i].update();
+      blobs[i].display();
+    }
+  } else {
+    for (let i = 0; i < numberBlobs; i++) {
+      blobs[i].update();
+      blobs[i].display();
+    }
   }
 }
 
@@ -73,7 +101,7 @@ class Blobs {
     // Position
     this.x = x;
     this.y = y;
-    this.r = 0.5;
+    this.r = 1;
     this.speed = 1;
 
     // Orientation
@@ -85,10 +113,12 @@ class Blobs {
     this.FL = createVector(0,0);
     this.F = createVector(0,0);
     this.FR = createVector(0,0);
-    this.SO = 30;
-    this.SA = 30; // 45 or 22.5 in the paper 
-    this.RA = 15;
+    this.SO = 15;
+    this.SA = 45; // 45 or 22.5 in the paper 
+    this.RA = 45;
     this.steerStrength = random();
+    this.reactionTime = 1; // Time between change of heading
+    this.age = 0;
 
     // Blob color
     if (colorMode == 0) {
@@ -107,6 +137,9 @@ class Blobs {
   } 
 
   update() {
+    // Update blobs's life
+    this.age += 1;
+
     // Update the position of each particles
     this.vx = cos(this.heading);
     this.vy = sin(this.heading);
@@ -114,27 +147,28 @@ class Blobs {
     this.x += this.vx*this.speed;
     this.y += this.vy*this.speed;
 
-    // Continuous sides
-    // this.x = this.inRangeX(this.x);
-    // this.y = this.inRangeY(this.y);
+    if (continuousMode == 0) {
+      this.x = this.inRangeX(this.x);
+      this.y = this.inRangeY(this.y);
+    } else if (continuousMode == 1) {
+      this.steerStrength = random();
+      // Bouncing against borders
+      if (this.x < 0) {
+        this.x = 1;
+        this.heading = 180 - this.heading + (0.5 - this.steerStrength)*40;
+      } else if (this.x > width-1) {
+        this.x = width-2;
+        this.heading = 180 - this.heading + (0.5 - this.steerStrength)*40;
+      }
 
-    // Bouncing against borders
-    if (this.x < 0) {
-      this.x = 1;
-      this.heading = 180 - this.heading;
-    } else if (this.x > width-1) {
-      this.x = width-2;
-      this.heading = 180 - this.heading;
+      if (this.y < 0) {
+        this.y = 1;
+        this.heading = -this.heading + (0.5 - this.steerStrength)*40;
+      } else if (this.y > height-1) {
+        this.y = height-2;
+        this.heading = -this.heading + (0.5 - this.steerStrength)*40;
+      }    
     }
-
-    if (this.y < 0) {
-      this.y = 1;
-      this.heading = -this.heading;
-    } else if (this.y > height-1) {
-      this.y = height-2;
-      this.heading = -this.heading;
-    }    
-    
 
     // Get positions of each sensors
     this.F.x = this.inRangeX(this.x + this.SO*cos(this.heading));
@@ -146,36 +180,38 @@ class Blobs {
     this.FL.x = this.inRangeX(this.x + this.SO*cos(this.heading - this.SA));
     this.FL.y = this.inRangeY(this.y + this.SO*sin(this.heading - this.SA));
 
-    // Get pixels of each sensors
-    let index, l, f, r;    
+    if (this.age % this.reactionTime == 0) {
+      // Get pixels of each sensors
+      let index, l, f, r;    
 
-    index = 4 * ((floor(this.FL.y) * pixelDens) * width * pixelDens + (floor(this.FL.x) * pixelDens));
-    l = pixels[index];
+      index = 4 * ((floor(this.FL.y) * pixelDens) * width * pixelDens + (floor(this.FL.x) * pixelDens));
+      l = pixels[index];
 
-    index = 4 * ((floor(this.F.y) * pixelDens) * width * pixelDens + (floor(this.F.x) * pixelDens));
-    f = pixels[index];
+      index = 4 * ((floor(this.F.y) * pixelDens) * width * pixelDens + (floor(this.F.x) * pixelDens));
+      f = pixels[index];
 
-    index = 4 * ((floor(this.FR.y) * pixelDens) * width * pixelDens + (floor(this.FR.x) * pixelDens));
-    r = pixels[index];
+      index = 4 * ((floor(this.FR.y) * pixelDens) * width * pixelDens + (floor(this.FR.x) * pixelDens));
+      r = pixels[index];
 
-    this.steerStrength = random();
-    // From Jones' paper of 2010
-    if ((f > l) && (f > r)) {
-      // Keeping the same direction
-    } 
-    else if ((f < l) && (f < r)) {
-      if (random() < 0.5) {
-        this.heading += this.RA*this.steerStrength;
-      } else {
-        this.heading -= this.RA*this.steerStrength;
+      this.steerStrength = random();
+      // From Jones' paper of 2010
+      if ((f > l) && (f > r)) {
+        // Keeping the same direction
+      } 
+      else if ((f < l) && (f < r)) {
+        if (random() < 0.5) {
+          this.heading += this.RA*this.steerStrength;
+        } else {
+          this.heading -= this.RA*this.steerStrength;
+        }
       }
-    }
-    else if (l < r) {
-      this.heading += this.RA*this.steerStrength;
-    } else if (r < l) {
-      this.heading -= this.RA*this.steerStrength;
-    } else {
-      // Keeping the same direction
+      else if (l < r) {
+        this.heading += this.RA*this.steerStrength;
+      } else if (r < l) {
+        this.heading -= this.RA*this.steerStrength;
+      } else {
+        // Keeping the same direction
+      }
     }
   }
 
@@ -193,3 +229,13 @@ class Blobs {
     return (y + height) % height;
   }
 }
+
+
+
+
+/////////////////////////////////////
+// Implementation with Trails Maps //
+/////////////////////////////////////
+
+let numberSpecies = 1;
+let trailMaps = [];
