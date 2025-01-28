@@ -1,6 +1,6 @@
 // Size of the canvas
-let WIDTH = 700;
-let HEIGHT = 400;
+let WIDTH = 500;
+let HEIGHT = 500;
 
 // Drops and mountains
 let drops = [];
