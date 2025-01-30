@@ -6,7 +6,7 @@ let pixelDens;
 
 // Blobs configuration
 let blobs = [];
-let numberBlobs = 25000;
+let numberBlobs = 5000;
 
 // Colors configuration
 // 0 -> White
