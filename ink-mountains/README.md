@@ -13,4 +13,4 @@ git clone https://github.com/UnMoutonPerdu/generative-art/
 
 2. Go to the `ink-mountains` folder.
 
-2. Open the `.html` file from the project in your favorite browser.
+3. Open the `.html` file from the project in your favorite browser.
