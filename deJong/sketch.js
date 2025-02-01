@@ -33,7 +33,7 @@ function setup() {
   cnv.position(sizeX, sizeY);
   background(0);
   colorMode(HSB, 360, 100, 100, 1);
-  //a = random(-2,2); b = random(-2,2); c = random(-2,2); d = random(-2,2);
+  a = random(-2,2); b = random(-2,2); c = random(-2,2); d = random(-2,2);
   console.log(a);
   console.log(b);
   console.log(c);
@@ -51,7 +51,7 @@ function draw() {
   text(c, width/2+50, height-15, width/4-40)
   text(d, 3*width/4+50, height-15, width/4-40)
   pop();
-  a = random(2); b = random(2); c = random(2); d = random(2);
+  // a = random(2); b = random(2); c = random(2); d = random(2);
   // a = random(-3,3); b = random(-3,3); c = random(-3,3); d = random(-3,3);
   // a = 1.4; b = -2.3; c = 2.4; d = -2.1;
   // a = -0.827; b = -1.637; c = 1.659; d = -0.943;
@@ -63,6 +63,6 @@ function draw() {
     point(scaleFactor*x, scaleFactor*y);
     let temp = x;
     x = sin(a*y) - cos(b*x);
-    y = sin(x*temp) - cos(d*y);
+    y = sin(c*temp) - cos(d*y);
   }
 }
