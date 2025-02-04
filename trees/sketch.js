@@ -3,13 +3,15 @@ let WIDTH = 600;
 let HEIGHT = 600;
 
 let lSystem;
-let ruleNum = 0;
-let numberRecursions = 5;
+let ruleNum = 1;
+let numberRecursions = 6;
 let sequence;
 let x = 0;
 let y = 0;
-//let len = (HEIGHT-50)/((numberRecursions*2)*(numberRecursions*2+1));
-let len = 10;
+let len;
+
+let step = 0;
+let previousStep;
 
 function setup() {
   cnv = createCanvas(WIDTH, HEIGHT);
@@ -20,26 +22,40 @@ function setup() {
 
   loadRule();
   sequence = doRecursion(numberRecursions);
+  // let numberOne = 0;
+  // while (sequence[numberOne] != "[") {
+  //   numberOne += 1;
+  // }
+  // len = HEIGHT/(2*numberOne);
   console.log(sequence);
   background(0);
 }
 
 function draw() {
-  strokeWeight(2);
+  strokeWeight(1);
   stroke(255);
-  if (min(floor(frameCount/100), 5) == 5) {
+  // if (min(floor(frameCount/100), 5) == 5) {
+  //   noLoop();
+  // }
+  // sequence = doRecursion(5);
+  // push();
+  // translate(WIDTH/2, HEIGHT/2);
+  // for (let theta = 0; theta < 360; theta+=360/5) {
+  //   push();
+  //   rotate(theta);
+  //   applyRule();
+  //   pop();
+  // }
+  // pop();
+  if (true) {
+    translate(WIDTH/2, HEIGHT);
+    // rotate(random(-25, 25));
+  }
+  applyIterRule(step);
+  step += 1;
+  if (step == sequence.length) {
     noLoop();
   }
-  sequence = doRecursion(min(floor(frameCount/100), 5));
-  push();
-  translate(WIDTH/2, HEIGHT/2);
-  for (let theta = 0; theta < 360; theta+=360/36) {
-    push();
-    rotate(theta);
-    applyRule();
-    pop();
-  }
-  pop();
 }
 
 function loadRule() {
@@ -54,6 +70,19 @@ function loadRule() {
       "constants" : {
         "[" : push,
         "]" : pop  
+      }
+    };
+  } else if (ruleNum == 1) {
+    // Fractal Plant
+    lSystem = {
+      "axiom" : "X",
+      "rules" : {
+        "X" : "F+[[X]-X]-F[-FX]+X",
+        "F" : "FF"
+      },
+      "constants" : {
+        "[" : push,
+        "]" : pop
       }
     };
   }
@@ -84,17 +113,69 @@ function doRecursion(n) {
 function applyRule() {
   for (let i = 0; i < sequence.length; i++) {
     let variable = sequence[i];
-    if (variable == "0") {
-      line(x, y, x, y-len/1.5);
-    } else if (variable == "1") {
-      line(x, y, x, y-len);
-      translate(0, -len);
-    } else if (variable == "[") {
-      lSystem["constants"][variable]();
-      rotate(45);
-    } else if (variable == "]") {
-      lSystem["constants"][variable]();
-      rotate(-45);
+    if (ruleNum == 0) {
+      if (variable == "0") {
+        line(x, y, x, y-len/1.5);
+      } else if (variable == "1") {
+        line(x, y, x, y-len);
+        translate(0, -len);
+      } else if (variable == "[") {
+        lSystem["constants"][variable]();
+        rotate(45);
+      } else if (variable == "]") {
+        lSystem["constants"][variable]();
+        rotate(-45);
+      }
+    } else if (ruleNum == 1) {
+      len = 3;
+      if (variable == "F") {
+        line(x, y, x, y-len);
+        translate(0, -len);
+      } else if (variable == "+") {
+        rotate(25);
+      } else if (variable == "-") {
+        rotate(-25);
+      } else if (variable == "[") {
+        push();
+      } else if (variable == "]") {
+        pop();
+      }
+    }
+  }
+}
+
+function applyIterRule(step) {
+  for (let i = 0; i < step; i++) {
+    let variable = sequence[i];
+    if (ruleNum == 0) {
+      if (variable == "0") {
+        line(x, y, x, y-len/1.5);
+      } else if (variable == "1") {
+        line(x, y, x, y-len);
+        translate(0, -len);
+      } else if (variable == "[") {
+        lSystem["constants"][variable]();
+        rotate(45);
+      } else if (variable == "]") {
+        lSystem["constants"][variable]();
+        rotate(-45);
+      }
+    } else if (ruleNum == 1) {
+      len = 3;
+      if (variable == "F") {
+        if (i == step-1) {
+          line(x, y, x, y-len);
+        }
+        translate(0, -len);
+      } else if (variable == "+") {
+        rotate(25);
+      } else if (variable == "-") {
+        rotate(-25);
+      } else if (variable == "[") {
+        push();
+      } else if (variable == "]") {
+        pop();
+      }
     }
   }
 }
