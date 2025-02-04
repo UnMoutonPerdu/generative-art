@@ -17,8 +17,8 @@ let noiseScaleY = 0.0006;
 
 function setup() {
   cnv = createCanvas(WIDTH, HEIGHT);
-  let sizeX = (windowWidth-width)/2;
-  let sizeY = (windowHeight-height)/2;
+  let sizeX = (windowWidth-WIDTH)/2;
+  let sizeY = (windowHeight-HEIGHT)/2;
   cnv.position(sizeX, sizeY);
   colorMode(HSB,360,100,100,100);
   for (let i = 0; i < numberParticles; i++) {
