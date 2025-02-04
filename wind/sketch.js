@@ -5,13 +5,13 @@ let HEIGHT = 600;
 // Particles configuration 
 let particles = [];
 let numberParticles = 1000;
-let speed = 1.5;
+let speed = 3;
 let lerpX = 0.35;
 let lerpY = 0.35;
 let epsilon = 0.07;
 
 // Perlin noise configuration
-let numberPI = 8;
+let numberPI = 10;
 let noiseScaleX = 0.0006;
 let noiseScaleY = 0.0006;
 
