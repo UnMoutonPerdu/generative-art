@@ -3,15 +3,12 @@ let WIDTH = 600;
 let HEIGHT = 600;
 
 let lSystem;
-let ruleNum = 1;
-let numberRecursions = 6;
+let ruleNum = 2;
+let numberRecursions = 4;
 let sequence;
 let x = 0;
 let y = 0;
-let len;
-
-let step = 0;
-let previousStep;
+let len = 10;
 
 function setup() {
   cnv = createCanvas(WIDTH, HEIGHT);
@@ -27,7 +24,7 @@ function setup() {
   //   numberOne += 1;
   // }
   // len = HEIGHT/(2*numberOne);
-  console.log(sequence);
+  // console.log(sequence);
   background(0);
 }
 
@@ -47,15 +44,10 @@ function draw() {
   //   pop();
   // }
   // pop();
-  if (true) {
-    translate(WIDTH/2, HEIGHT);
-    // rotate(random(-25, 25));
-  }
-  applyIterRule(step);
-  step += 1;
-  if (step == sequence.length) {
-    noLoop();
-  }
+  translate(WIDTH/2, HEIGHT);
+  //rotate(random(-25, 25));
+  applyRule();
+  noLoop();
 }
 
 function loadRule() {
@@ -85,6 +77,20 @@ function loadRule() {
         "]" : pop
       }
     };
+  } else if (ruleNum == 2) {
+    // Fucking tree
+    lSystem = {
+      "axiom" : "Z",
+      "rules" : {
+        "A" : "F+[+FZ-[Z]-Z]-F[F-[FZ]+Z]+[ZF-F+[Z]F]R",
+        "B" : "F-[F-[Z]F+FZ+F[Z]]+F-[+F[FZ]-[FZ]]-[+F[Z]]R",
+        "F" : "FF"
+      },
+      "constants" : {
+        "[" : push,
+        "]" : pop
+      }
+    };
   }
 }
 
@@ -97,7 +103,21 @@ function doRecursion(n) {
   while (n != 0) {
     for (let i = 0; i < currentSeq.length; i++) {
       let variable = currentSeq[i];
-      if (variable in lSystem["rules"]) {
+      if (variable == "Z") {
+        if (random() > 0.5) {
+          nextSeq = nextSeq.concat(lSystem["rules"]["A"]);
+        } else {
+          nextSeq = nextSeq.concat(lSystem["rules"]["B"]);
+        }
+      } else if (variable == "R") {
+        if (random() > 0.4) {
+          if (random() > 0.5) {
+            nextSeq = nextSeq.concat(lSystem["rules"]["A"]);
+          } else {
+            nextSeq = nextSeq.concat(lSystem["rules"]["B"]);
+          }
+        }
+      } else if (variable in lSystem["rules"]) {
         nextSeq = nextSeq.concat(lSystem["rules"][variable]);
       } else {
         nextSeq = nextSeq.concat(variable);
@@ -121,10 +141,10 @@ function applyRule() {
         translate(0, -len);
       } else if (variable == "[") {
         lSystem["constants"][variable]();
-        rotate(45);
+        rotate(30);
       } else if (variable == "]") {
         lSystem["constants"][variable]();
-        rotate(-45);
+        rotate(-30);
       }
     } else if (ruleNum == 1) {
       len = 3;
@@ -140,10 +160,26 @@ function applyRule() {
       } else if (variable == "]") {
         pop();
       }
+    } else if (ruleNum == 2) {
+      if (variable == "F") {
+        line(x, y, x, y-len);
+        translate(0, -len);
+      } else if (variable == "+") {
+        rotate(25+2*noise(0.001*len, 0.003*i));
+      } else if (variable == "-") {
+        rotate(-25+2*noise(0.001*len, 0.003*i));
+      } else if (variable == "[") {
+        len *= 0.8;
+        push();
+      } else if (variable == "]") {
+        len /= 0.8;
+        pop();
+      }
     }
   }
 }
 
+// Does not work well 
 function applyIterRule(step) {
   for (let i = 0; i < step; i++) {
     let variable = sequence[i];
