@@ -19,9 +19,9 @@ let stars = [];
 let numberShootingStars = 1;
 let shootingStars = [];
 
-function setGradient(c1, c2) {
+function setGradient(c1, c2, end=height, begin=0) {
   noFill();
-  for (var y = 0; y < height; y++) {
+  for (var y = begin; y < end; y++) {
     let inter = map(y, 0, height, 0, 1);
     let c = lerpColor(c1, c2, inter);
     stroke(c);
@@ -61,9 +61,8 @@ function setup() {
 
 function draw() {
   stroke(0);
-  c1 = color(40,15,54,30);
-  c2 = color(240,159,156,30);
-  setGradient(c1, c2);
+  setGradient(color(40,15,54,30), color(240,159,156,30), end=HEIGHT/2, begin=0);
+  setGradient(color(40,15,54,200), color(240,159,156,200), end=HEIGHT, begin=HEIGHT/2);
 
   for (let i = 0; i < numberStars; i++) {
     stars[i].update();
@@ -250,7 +249,7 @@ class Tree {
     this.posX = random(WIDTH);
     this.posY = random(HEIGHT, HEIGHT+50);
 
-    this.windAngle = random(6, 10);
+    this.windAngle = random(6, 15);
     this.windSpeed = random(0.004, 0.008);
     this.rigidity = map(this.len, 10, lenSup, 1.0, 0.2);
     this.windDiff = this.windAngle*(noise(frameCount*this.windSpeed)-0.05)*this.rigidity;
