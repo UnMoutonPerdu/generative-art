@@ -1,5 +1,5 @@
 // Canvas Configuration
-let WIDTH = 600;
+let WIDTH = 800;
 let HEIGHT = 600;
 
 let lSystem;
@@ -9,8 +9,22 @@ let x = 0;
 let y = 0;
 
 let len = 200;
+let scale = 0.5;
 let angle = 35;
 let lineWeight = 5;
+
+let numberTrees = 3;
+let trees = [];
+
+function setGradient(c1, c2) {
+  noFill();
+  for (var y = 0; y < height; y++) {
+    let inter = map(y, 0, height, 0, 1);
+    let c = lerpColor(c1, c2, inter);
+    stroke(c);
+    line(0, y, width, y);
+  }
+}
 
 function setup() {
   cnv = createCanvas(WIDTH, HEIGHT);
@@ -20,15 +34,26 @@ function setup() {
   angleMode(DEGREES);
 
   loadRule();
-  sequence = doRecursion(numberRecursions);
-  background(0);
+
+  for (let i = 0; i < numberTrees; i++) {
+    trees[i] = new Tree();
+    trees[i].generate();
+  }
+
+  c1 = color(14, 4, 56);
+  c2 = color(95, 6, 97);
+  setGradient(c1, c2);
 }
 
 function draw() {
-  stroke(255);
+  stroke(0);
 
-  translate(WIDTH/2, HEIGHT);
-  applyRule();
+  for (let i = 0; i < numberTrees; i++) {
+    push();
+    translate(WIDTH/2, HEIGHT);
+    trees[i].draw();
+    pop();
+  }
   noLoop();
 }
 
@@ -92,8 +117,8 @@ function applyRule() {
     let variable = sequence[i];
     if (variable == "F") {
       strokeWeight(lineWeight);
-      line(x, y, x, y-len);
-      translate(0, -len);
+      line(x, y, x, y-scale*len);
+      translate(0, -scale*len);
     } else if (variable == "+") {
       rotate(angle+15*noise(len));
     } else if (variable == "-") {
@@ -106,6 +131,40 @@ function applyRule() {
       len /= 0.85;
       lineWeight /= 0.85;
       pop();
+    }
+  }
+}
+
+class Tree {
+  constructor() {
+    this.sequence = "";
+    this.scale = 0.8;
+  }
+
+  generate() {
+    this.sequence = doRecursion(numberRecursions);
+  }
+
+  draw() {
+    for (let i = 0; i < this.sequence.length; i++) {
+      let variable = this.sequence[i];
+      if (variable == "F") {
+        strokeWeight(lineWeight);
+        line(x, y, x, y-this.scale*len);
+        translate(0, -this.scale*len);
+      } else if (variable == "+") {
+        rotate(angle+15*noise(len));
+      } else if (variable == "-") {
+        rotate(-angle+15*noise(len));
+      } else if (variable == "[") {
+        len *= 0.85;
+        lineWeight *= 0.85;
+        push();
+      } else if (variable == "]") {
+        len /= 0.85;
+        lineWeight /= 0.85;
+        pop();
+      }
     }
   }
 }
