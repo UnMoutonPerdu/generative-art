@@ -8,16 +8,20 @@ let sequence;
 let x = 0;
 let y = 0;
 
-let numberTrees = 8;
+let numberTrees;
 let trees = [];
 let trunkPieces = 10;
-let lenInf = 80;
-let lenSup = 100;
+let lenInf = 100;
+let lenSup = 170;
 
-let numberStars = 35;
+let numberStars = 42;
 let stars = [];
 let numberShootingStars = 1;
 let shootingStars = [];
+
+let c1;
+let c2;
+let background = true;
 
 function setGradient(c1, c2, end=height, begin=0) {
   noFill();
@@ -41,6 +45,8 @@ function setup() {
 
   loadRule();
 
+  numberTrees = floor(random(4,7));
+
   for (let i = 0; i < numberTrees; i++) {
     trees[i] = new Tree();
     trees[i].generate();
@@ -61,8 +67,18 @@ function setup() {
 
 function draw() {
   stroke(0);
-  setGradient(color(40,15,54,30), color(240,159,156,30), end=HEIGHT/2, begin=0);
-  setGradient(color(40,15,54,200), color(240,159,156,200), end=HEIGHT, begin=HEIGHT/2);
+  if (background) {
+    c1 = color(40,15,54,255);
+    c2 = color(240,159,156,255);
+    setGradient(c1, c2);
+    background = false;
+  } else {
+    setGradient(color(40,15,54,50), color(240,159,156,50), end=HEIGHT/2, begin=0);
+    setGradient(color(40,15,54,200), color(240,159,156,200), end=HEIGHT, begin=HEIGHT/2);
+  }
+  // c1 = color(40,15,54,200);
+  // c2 = color(240,159,156,200);
+  // setGradient(c1, c2);
 
   for (let i = 0; i < numberStars; i++) {
     stars[i].update();
@@ -103,8 +119,8 @@ function loadRule() {
     lSystem = {
         "axiom" : "TZ",
         "rules" : {
-          0 : "F[+FZ[-FZ]]F[-FZ]",
-          1 : "F[-FZ[+FZ]]F[+FZ]",
+          0 : "[+FZ[-FZ]]F[-FZ]",
+          1 : "[-FZ[+FZ]]F[+FZ]",
           2 : "[[+F[FZ]][-F[FZ]]]+F[FZ]",
           3 : "[-[F[FZ]][+F[FZ]]]-F[FZ]",
           "F" : "F"
@@ -244,7 +260,7 @@ class Tree {
     this.sequence = "";
     this.scale = random(0.2, 0.3);
     this.len = random(lenInf, lenSup);
-    this.lw = map(this.len, lenInf, lenSup, 5, 7);
+    this.lw = map(this.len, lenInf, lenSup, 9, 15);
     this.angle = 35;
     this.posX = random(WIDTH);
     this.posY = random(HEIGHT, HEIGHT+50);
@@ -268,9 +284,11 @@ class Tree {
 
   drawTrunk() {
     for (let i = 0; i < trunkPieces; i++) {
+      strokeWeight(this.lw);
       rotate(this.trunkAngles[i]);
       line(x, y, x, y-this.len/trunkPieces);
       translate(0, -this.len/trunkPieces);
+      this.lw *= 0.9;
     }
   }
 
@@ -303,5 +321,6 @@ class Tree {
         pop();
       }
     }
+    this.lw /= 0.9**trunkPieces;
   }
 }
