@@ -1,5 +1,7 @@
 # Under Star ✨
 
+![trees](./trees.png)
+
 I was listening to *Under Star* by Shocking Lemon and decided to make a landscape using stars and L-systems to generate trees.
 
 ## How to run the code 
