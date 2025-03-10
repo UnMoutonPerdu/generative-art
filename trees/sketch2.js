@@ -12,7 +12,7 @@ let numberTrees;
 let trees = [];
 let trunkPieces = 10;
 let lenInf = 100;
-let lenSup = 170;
+let lenSup = 250;
 
 let numberStars = 42;
 let stars = [];
@@ -266,7 +266,7 @@ class Tree {
     this.posY = random(HEIGHT, HEIGHT+50);
 
     this.windAngle = random(6, 15);
-    this.windSpeed = random(0.004, 0.008);
+    this.windSpeed = random(1, 6);
     this.rigidity = map(this.len, 10, lenSup, 1.0, 0.2);
     this.windDiff = this.windAngle*(noise(frameCount*this.windSpeed)-0.05)*this.rigidity;
 
