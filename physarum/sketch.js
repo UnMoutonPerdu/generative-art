@@ -1,7 +1,7 @@
 // Based on Jone's paper of 2010
 // Canvas configuration
-let WIDTH = 600;
-let HEIGHT = 600;
+let WIDTH = 800;
+let HEIGHT = 800;
 let pixelDens;
 let blurring = 10;
 
@@ -14,14 +14,14 @@ let densityPopulation = 0.15;
 // 0 -> White
 // 1 -> Random
 // 2 -> Yellow - Physarum like
-let colorMode = 0; 
+let colorMode = 2; 
 // 0 -> Border to border
 // 1 -> Bouncing against walls
 let continuousMode = 1; 
 // -1 -> Center
 // 0 -> Center + corners = fireworks
 // 1 -> Spawn in a circle
-let configuration = 1;
+let configuration = 0;
 // 0 -> All at the same time
 // 1 -> A certain  batch
 let spawnMode = 0;
