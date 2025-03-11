@@ -1,10 +1,10 @@
 let imgArr = [] 
-let WIDTH = 1280;
-let HEIGHT = 1080;
+let WIDTH = 900;
+let HEIGHT = 900;
 let rectWidth;
 let rectHeight;
 let numberGen = 8;
-let numberCover = 64;
+let numberCover = 50;
 let maxIndex = [0, 1231, 2444, 6944, 4140, 4409, 4102, 1981, 186];
 let mode = 0; // 0 for gen by gen | 1 for one line 
 let consoleName = "ps3";
