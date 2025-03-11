@@ -1,0 +1,22 @@
+\frametitle{Node structure}
+\begin{enumerate}
+        \item \begin{center}
+            \centering
+            \begin{lstlisting}
+            struct Node{T<:Real}
+                id::Int64
+                connections::Dict{Int64, T}
+            end
+            \end{lstlisting}
+        \end{center}
+
+        \item \begin{center}
+            \centering
+            \begin{lstlisting}
+            struct Node{T<:Real}
+                id::Int64
+                connections::Dict{Int64, T}
+            end
+            \end{lstlisting}
+        \end{center}
+    \end{enumerate}

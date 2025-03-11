@@ -1,0 +1,8 @@
+\babel@toc {french}{}\relax 
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Concepts clés}{5}{0}{2}
+\beamer@subsectionintoc {2}{1}{Art Génératif}{6}{0}{2}
+\beamer@subsectionintoc {2}{2}{Évolution Grammaticale}{9}{0}{2}
+\beamer@subsectionintoc {2}{3}{Sélection de génomes}{14}{0}{2}
+\beamer@sectionintoc {3}{Le framework \textit {GenerativeGI}}{17}{0}{3}
+\beamer@sectionintoc {4}{Résultats}{20}{0}{4}
