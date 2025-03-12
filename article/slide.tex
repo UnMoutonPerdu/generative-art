@@ -117,14 +117,14 @@
 \subsection{Art Génératif}
 
 \begin{frame}{Techniques d'art génératif utilisées}
-    Restriction à 7 techniques génératives: 
+    Restriction à 8 techniques génératives: 
     \begin{multicols}{2}
         \begin{itemize}
             \item Stipple
             \item Cellular Automata
             \item Pixel Sorting 
             \item Circle Packing 
-            \item Flow Field 
+            \item Flow Field (2 implémentations différentes)
             \item Drunkard's Walk 
             \item Dithering 
         \end{itemize}
@@ -191,6 +191,7 @@
         \item Choix des parents à une certaine génération pour créer les individus enfants de la prochaine génération 
         \item Algorithme de recherche de solutions dans un espace en utilisant un ensemble de fonctions objectif 
         \item Domaines: programmation génétique, robotiques, géosciences, etc... 
+        \item Cadre de l'article: Utilisation de la variante $\epsilon$-Lexicase Selection
     \end{itemize}
 \end{frame}
 
@@ -241,10 +242,109 @@
 \end{frame}
 
 \begin{frame}{(3) Configuration de l'espace de recherche}
-    
+    \begin{itemize}
+        \item Choix du type de recherche (Lexicase Selection | Sélection aléatoire | Utilisation d'une unique fonction objectif)
+        \item Paramétrisation de la population $\rightarrow$ \#croisements, \#mutations, \#individus, etc...
+        \item Fonctions objectifs choisies :
+        \begin{itemize}
+            \item $ff_{\min(genome)} \rightarrow$ Minimiser les doublons de génome entre les individus 
+            \item $ff_{\max(techniques)} \rightarrow$ Maximiser le nombre de techniques utilisées
+            \item $ff_{\max(RMS)}$ et $ff_{\max(Chebyshev)} \rightarrow$ Maximiser les différences entre les images générées
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Architecture de \textit{GenerativeGI}}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.4]{fig/archi.png}
+        \caption{Diagramme du fonctionnement de \textit{GenerativeGI}}
+    \end{figure}
 \end{frame}
 
 \section{Résultats}
+
+\begin{frame}{Configuration des expérimentations}
+    \begin{table}[]
+        \begin{tabular}{|l|l|}
+            \hline
+            \textbf{Paramètre}                          & \textbf{Valeur}    \\ \hline
+            Nombre d'expérimentations                   & 10                 \\ \hline
+            Taille de l'image                           & 1000 $\times$ 1000 \\ \hline
+            Nombre de techniques                        & 8                  \\ \hline
+            Nombre de générations                       & 100                \\ \hline
+            Taille de la population                     & 100                \\ \hline
+            Nombre de cycles dans le cas aléatoire      & 50                 \\ \hline
+            Taux de croisement                          & 0.5                \\ \hline
+            Taux de mutation                            & 0.4                \\ \hline
+            Nombre de fonctions objectifs dans Lexicase & 4                  \\ \hline
+            $\epsilon$                                  & 0.85               \\ \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Résultats empiriques}
+    \begin{columns}
+        \column{0.42\linewidth}
+            \begin{figure}
+            \centering
+            \includegraphics[scale=0.4]{fig/novelty.png}
+            \caption{Score de nouveauté de l'individu le plus "nouveau" pour chaque technique}
+            \end{figure}
+        \column{0.54\linewidth}
+        \begin{itemize}
+            \item Calcul des scores de nouveauté de chaque méthode de sélection
+            \item Test de Wilcoxon avec correction de Bonferroni pour comparer 
+            \item $p < 0.01$ pour Lexicase | Random 
+            \item $p < 0.03$ pour Single | Random
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Résultats empiriques}
+    \begin{columns}
+        \column{0.42\linewidth}
+        \begin{figure}
+            \centering
+            \includegraphics[scale=0.4]{fig/uniqueness.png}
+            \caption{Valeur moyenne de $ff_{\min(genome)}$ pour chaque technique}
+        \end{figure}
+        \column{0.54\linewidth}
+        \begin{itemize}
+            \item Plus la valeur est proche de 0 et plus la population est diverse
+            \item $p < 0.001$ pour Random | Lexicase et Single
+            \item $p < 0.001$ pour Lexicase | Single 
+            \item Diversification plus importante avec Lexicase, grande variété d'images 
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Images générées}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.32]{fig/results1.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Images générées}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.32]{fig/results2.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conclusion}
+    \begin{itemize}
+        \item \textit{GenerativeGI} se présente comme une alternative aux techniques d'IA actuelles (DALL-E, Midjourney, Stable Diffusion, etc...)
+        \item Ne nécessite aucune données préalables
+        \item Certaines limitations: 
+        \begin{itemize}
+            \item Peu de fonctions objectif utilisées $\rightarrow$ Dirige énormèment la génération
+            \item Faible résolution 
+            \item Peu de techniques de génération 
+        \end{itemize}
+    \end{itemize}
+\end{frame}
 
 \begin{frame}{Merci}
     \begin{center}
